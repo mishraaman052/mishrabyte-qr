@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MishraByte Secret Portal</title>
+<style>
+body{
+background:#000;
+color:#00ff00;
+font-family:Consolas,monospace;
+text-align:center;
+padding-top:50px;
+overflow:hidden;
+}
+#logo{
+display:none;
+font-size:60px;
+font-weight:bold;
+color:white;
+margin-top:30px;
+}
+.small{
+font-size:20px;
+color:#00ffff;
+}
+</style>
+</head>
+<body>
+
+<h2 id="scan">Initializing Device Scan...</h2>
+
+<pre id="progress"></pre>
+
+<div id="logo">
+🚀 MishraByte
+<div class="small">Technology For The Future</div>
+</div>
+
+<script>
+let p=0;
+let bar=document.getElementById("progress");
+
+let x=setInterval(()=>{
+p+=5;
+bar.innerHTML=
+"["+"█".repeat(p/5)+"░".repeat(20-p/5)+"] "+p+"%";
+
+if(p>=100){
+clearInterval(x);
+
+document.getElementById("scan").innerHTML=
+"ACCESS GRANTED";
+
+setTimeout(()=>{
+document.body.style.background="#111";
+document.getElementById("logo").style.display="block";
+},1500);
+}
+},150);
+</script>
+
+</body>
+</html>
