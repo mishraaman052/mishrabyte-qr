@@ -1,63 +1,248 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>MishraByte Secret Portal</title>
+
 <style>
-body{
-background:#000;
-color:#00ff00;
-font-family:Consolas,monospace;
-text-align:center;
-padding-top:50px;
-overflow:hidden;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
-#logo{
+
+body{
+background:black;
+overflow:hidden;
+font-family:Consolas,monospace;
+color:#00ff00;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+#center{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+width:90%;
+}
+
+h1{
+font-size:48px;
+text-shadow:0 0 20px #00ff00;
+}
+
+#scan{
+font-size:24px;
+margin-bottom:20px;
+}
+
+#bar{
+width:350px;
+height:25px;
+border:2px solid #00ff00;
+margin:auto;
+}
+
+#fill{
+height:100%;
+width:0%;
+background:#00ff00;
+}
+
+#final{
 display:none;
-font-size:60px;
+animation:fade 2s;
+}
+
+.logo{
+font-size:70px;
 font-weight:bold;
 color:white;
-margin-top:30px;
+text-shadow:0 0 25px cyan;
 }
-.small{
-font-size:20px;
+
+.tag{
 color:#00ffff;
+font-size:24px;
+margin-top:10px;
+}
+
+.whatsapp{
+display:inline-block;
+margin-top:25px;
+padding:12px 25px;
+background:#25D366;
+color:white;
+text-decoration:none;
+border-radius:8px;
+font-size:18px;
+}
+
+@keyframes fade{
+from{opacity:0;}
+to{opacity:1;}
 }
 </style>
 </head>
+
 <body>
 
-<h2 id="scan">Initializing Device Scan...</h2>
+<canvas id="matrix"></canvas>
 
-<pre id="progress"></pre>
+<div id="center">
 
-<div id="logo">
+<div id="loading">
+
+<h1>ACCESSING DEVICE...</h1>
+
+<div id="scan">Initializing Scan...</div>
+
+<div id="bar">
+<div id="fill"></div>
+</div>
+
+<br>
+
+<div id="percent">0%</div>
+
+</div>
+
+<div id="final">
+
+<div class="logo">
 🚀 MishraByte
-<div class="small">Technology For The Future</div>
+</div>
+
+<div class="tag">
+Technology For The Future
+</div>
+
+<br>
+
+<h2>WELCOME TO THE SECRET TECH PORTAL</h2>
+
+<br>
+
+<p>
+Computers • Electronics • Accessories • Networking
+</p>
+
+<a class="whatsapp"
+href="https://wa.me/919999999999"
+target="_blank">
+Contact Us
+</a>
+
+</div>
+
 </div>
 
 <script>
-let p=0;
-let bar=document.getElementById("progress");
 
-let x=setInterval(()=>{
-p+=5;
-bar.innerHTML=
-"["+"█".repeat(p/5)+"░".repeat(20-p/5)+"] "+p+"%";
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+const letters=
+"01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+const fontSize=16;
+const columns=canvas.width/fontSize;
+
+const drops=[];
+
+for(let i=0;i<columns;i++)
+drops[i]=1;
+
+function draw(){
+
+ctx.fillStyle=
+"rgba(0,0,0,0.05)";
+ctx.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+ctx.fillStyle="#00ff00";
+ctx.font=fontSize+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+
+const text=
+letters[
+Math.floor(
+Math.random()*letters.length
+)
+];
+
+ctx.fillText(
+text,
+i*fontSize,
+drops[i]*fontSize
+);
+
+if(
+drops[i]*fontSize>
+canvas.height &&
+Math.random()>0.975
+)
+drops[i]=0;
+
+drops[i]++;
+}
+}
+
+setInterval(draw,35);
+
+let p=0;
+
+let timer=setInterval(()=>{
+
+p+=2;
+
+document.getElementById("fill")
+.style.width=p+"%";
+
+document.getElementById("percent")
+.innerHTML=p+"%";
 
 if(p>=100){
-clearInterval(x);
 
-document.getElementById("scan").innerHTML=
+clearInterval(timer);
+
+document.getElementById("scan")
+.innerHTML=
 "ACCESS GRANTED";
 
 setTimeout(()=>{
-document.body.style.background="#111";
-document.getElementById("logo").style.display="block";
-},1500);
+
+document.getElementById("loading")
+.style.display="none";
+
+document.getElementById("final")
+.style.display="block";
+
+},2000);
 }
-},150);
+
+},100);
+
 </script>
 
 </body>
 </html>
+```
