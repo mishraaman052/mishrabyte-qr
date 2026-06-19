@@ -1,9 +1,8 @@
-```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MishraByte Secret Portal</title>
 
 <style>
@@ -14,9 +13,9 @@ box-sizing:border-box;
 }
 
 body{
-background:black;
+background:#000;
 overflow:hidden;
-font-family:Consolas,monospace;
+font-family:Consolas, monospace;
 color:#00ff00;
 }
 
@@ -24,10 +23,12 @@ canvas{
 position:fixed;
 top:0;
 left:0;
+width:100%;
+height:100%;
 z-index:-1;
 }
 
-#center{
+#container{
 position:absolute;
 top:50%;
 left:50%;
@@ -36,59 +37,79 @@ text-align:center;
 width:90%;
 }
 
-h1{
-font-size:48px;
-text-shadow:0 0 20px #00ff00;
-}
-
-#scan{
-font-size:24px;
+#title{
+font-size:40px;
+text-shadow:0 0 15px #00ff00;
 margin-bottom:20px;
 }
 
-#bar{
+#scan{
+font-size:22px;
+margin-bottom:20px;
+}
+
+.progress{
 width:350px;
 height:25px;
 border:2px solid #00ff00;
 margin:auto;
 }
 
-#fill{
-height:100%;
+.progress-fill{
 width:0%;
+height:100%;
 background:#00ff00;
+transition:width .1s;
 }
 
-#final{
+#percent{
+margin-top:10px;
+font-size:20px;
+}
+
+#portal{
 display:none;
-animation:fade 2s;
+animation:fadeIn 2s;
 }
 
 .logo{
 font-size:70px;
 font-weight:bold;
-color:white;
+color:#fff;
 text-shadow:0 0 25px cyan;
 }
 
-.tag{
-color:#00ffff;
+.tagline{
 font-size:24px;
+color:#00ffff;
 margin-top:10px;
 }
 
-.whatsapp{
+.services{
+margin-top:20px;
+font-size:18px;
+color:#fff;
+}
+
+.secret{
+margin-top:25px;
+font-size:22px;
+color:#00ff00;
+}
+
+.button{
 display:inline-block;
 margin-top:25px;
-padding:12px 25px;
+padding:12px 28px;
 background:#25D366;
 color:white;
 text-decoration:none;
 border-radius:8px;
 font-size:18px;
+font-weight:bold;
 }
 
-@keyframes fade{
+@keyframes fadeIn{
 from{opacity:0;}
 to{opacity:1;}
 }
@@ -99,48 +120,42 @@ to{opacity:1;}
 
 <canvas id="matrix"></canvas>
 
-<div id="center">
+<div id="container">
 
-<div id="loading">
+<div id="loader">
 
-<h1>ACCESSING DEVICE...</h1>
+<div id="title">ACCESSING DEVICE...</div>
 
 <div id="scan">Initializing Scan...</div>
 
-<div id="bar">
-<div id="fill"></div>
+<div class="progress">
+<div class="progress-fill" id="fill"></div>
 </div>
-
-<br>
 
 <div id="percent">0%</div>
 
 </div>
 
-<div id="final">
+<div id="portal">
 
-<div class="logo">
-🚀 MishraByte
-</div>
+<div class="logo">🚀 MishraByte</div>
 
-<div class="tag">
+<div class="tagline">
 Technology For The Future
 </div>
 
-<br>
+<div class="secret">
+YOU HAVE UNLOCKED THE SECRET TECH PORTAL
+</div>
 
-<h2>WELCOME TO THE SECRET TECH PORTAL</h2>
-
-<br>
-
-<p>
+<div class="services">
 Computers • Electronics • Accessories • Networking
-</p>
+</div>
 
-<a class="whatsapp"
+<a class="button"
 href="https://wa.me/919999999999"
 target="_blank">
-Contact Us
+Contact MishraByte
 </a>
 
 </div>
@@ -149,45 +164,38 @@ Contact Us
 
 <script>
 
-const canvas=document.getElementById("matrix");
-const ctx=canvas.getContext("2d");
+// MATRIX EFFECT
 
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
 
-const letters=
-"01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-const fontSize=16;
-const columns=canvas.width/fontSize;
+const letters =
+"01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-const drops=[];
+const fontSize = 16;
+const columns = canvas.width / fontSize;
 
-for(let i=0;i<columns;i++)
+const drops = [];
+
+for(let i=0;i<columns;i++){
 drops[i]=1;
+}
 
 function draw(){
 
-ctx.fillStyle=
-"rgba(0,0,0,0.05)";
-ctx.fillRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
+ctx.fillStyle="rgba(0,0,0,0.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
 
 ctx.fillStyle="#00ff00";
 ctx.font=fontSize+"px monospace";
 
 for(let i=0;i<drops.length;i++){
 
-const text=
-letters[
-Math.floor(
-Math.random()*letters.length
-)
-];
+const text =
+letters[Math.floor(Math.random()*letters.length)];
 
 ctx.fillText(
 text,
@@ -196,11 +204,11 @@ drops[i]*fontSize
 );
 
 if(
-drops[i]*fontSize>
-canvas.height &&
-Math.random()>0.975
-)
+drops[i]*fontSize > canvas.height &&
+Math.random() > 0.975
+){
 drops[i]=0;
+}
 
 drops[i]++;
 }
@@ -208,33 +216,46 @@ drops[i]++;
 
 setInterval(draw,35);
 
-let p=0;
+// LOADING EFFECT
 
-let timer=setInterval(()=>{
+let progress=0;
 
-p+=2;
+const fill =
+document.getElementById("fill");
 
-document.getElementById("fill")
-.style.width=p+"%";
+const percent =
+document.getElementById("percent");
 
-document.getElementById("percent")
-.innerHTML=p+"%";
+const scan =
+document.getElementById("scan");
 
-if(p>=100){
+const loader =
+document.getElementById("loader");
+
+const portal =
+document.getElementById("portal");
+
+const timer = setInterval(()=>{
+
+progress += 2;
+
+fill.style.width =
+progress + "%";
+
+percent.innerHTML =
+progress + "%";
+
+if(progress >= 100){
 
 clearInterval(timer);
 
-document.getElementById("scan")
-.innerHTML=
+scan.innerHTML =
 "ACCESS GRANTED";
 
 setTimeout(()=>{
 
-document.getElementById("loading")
-.style.display="none";
-
-document.getElementById("final")
-.style.display="block";
+loader.style.display="none";
+portal.style.display="block";
 
 },2000);
 }
@@ -245,4 +266,3 @@ document.getElementById("final")
 
 </body>
 </html>
-```
