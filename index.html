@@ -1,22 +1,19 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MishraByte Secret Portal</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MishraByte AI Portal</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box}
 
 body{
 background:#000;
+color:#00ff88;
+font-family:Consolas,monospace;
 overflow:hidden;
-font-family:Consolas, monospace;
-color:#00ff00;
 }
 
 canvas{
@@ -28,241 +25,239 @@ height:100%;
 z-index:-1;
 }
 
-#container{
+#screen{
 position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-text-align:center;
 width:90%;
+max-width:900px;
+text-align:center;
 }
 
-#title{
-font-size:40px;
-text-shadow:0 0 15px #00ff00;
+h1{
+font-size:3rem;
+text-shadow:0 0 20px #00ff88;
 margin-bottom:20px;
 }
 
-#scan{
-font-size:22px;
-margin-bottom:20px;
+#terminal{
+font-size:1.2rem;
+min-height:180px;
+text-align:left;
+border:1px solid #00ff88;
+padding:20px;
+background:rgba(0,0,0,.6);
 }
 
-.progress{
-width:350px;
-height:25px;
-border:2px solid #00ff00;
-margin:auto;
-}
-
-.progress-fill{
-width:0%;
-height:100%;
-background:#00ff00;
-transition:width .1s;
-}
-
-#percent{
-margin-top:10px;
-font-size:20px;
+#countdown{
+display:none;
+font-size:6rem;
+color:red;
+text-shadow:0 0 25px red;
 }
 
 #portal{
 display:none;
-animation:fadeIn 2s;
+animation:fade 2s;
 }
 
 .logo{
-font-size:70px;
+font-size:5rem;
 font-weight:bold;
-color:#fff;
-text-shadow:0 0 25px cyan;
+color:white;
+text-shadow:0 0 30px cyan;
 }
 
-.tagline{
-font-size:24px;
-color:#00ffff;
+.tag{
+font-size:1.5rem;
 margin-top:10px;
+color:#00ffff;
 }
 
-.services{
-margin-top:20px;
-font-size:18px;
-color:#fff;
-}
-
-.secret{
-margin-top:25px;
-font-size:22px;
-color:#00ff00;
-}
-
-.button{
+.btn{
 display:inline-block;
 margin-top:25px;
-padding:12px 28px;
+padding:14px 28px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
 background:#25D366;
 color:white;
-text-decoration:none;
-border-radius:8px;
-font-size:18px;
-font-weight:bold;
 }
 
-@keyframes fadeIn{
-from{opacity:0;}
-to{opacity:1;}
+.glitch{
+animation:glitch .2s infinite;
+}
+
+@keyframes fade{
+from{opacity:0}
+to{opacity:1}
+}
+
+@keyframes glitch{
+0%{transform:translate(2px,0)}
+25%{transform:translate(-2px,0)}
+50%{transform:translate(2px,2px)}
+75%{transform:translate(-2px,-2px)}
+100%{transform:translate(0,0)}
 }
 </style>
 </head>
-
 <body>
 
 <canvas id="matrix"></canvas>
 
-<div id="container">
+<div id="screen">
 
-<div id="loader">
+<h1>MISHRABYTE AI SYSTEM</h1>
 
-<div id="title">ACCESSING DEVICE...</div>
+<div id="terminal"></div>
 
-<div id="scan">Initializing Scan...</div>
-
-<div class="progress">
-<div class="progress-fill" id="fill"></div>
-</div>
-
-<div id="percent">0%</div>
-
-</div>
+<div id="countdown"></div>
 
 <div id="portal">
+<div class="logo">🚀 MISHRABYTE</div>
+<div class="tag">Technology For The Future</div>
 
-<div class="logo">🚀 MishraByte</div>
-
-<div class="tagline">
-Technology For The Future
-</div>
-
-<div class="secret">
-YOU HAVE UNLOCKED THE SECRET TECH PORTAL
-</div>
-
-<div class="services">
+<p style="margin-top:20px">
 Computers • Electronics • Accessories • Networking
-</div>
+</p>
 
-<a class="button"
+<a class="btn"
 href="https://wa.me/919999999999"
 target="_blank">
 Contact MishraByte
 </a>
-
 </div>
 
 </div>
 
 <script>
 
-// MATRIX EFFECT
+// MATRIX RAIN
 
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
+const canvas=document.getElementById('matrix');
+const ctx=canvas.getContext('2d');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
 
-const letters =
-"01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const chars="01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const size=16;
+const cols=canvas.width/size;
+const drops=[];
 
-const fontSize = 16;
-const columns = canvas.width / fontSize;
+for(let i=0;i<cols;i++) drops[i]=1;
 
-const drops = [];
-
-for(let i=0;i<columns;i++){
-drops[i]=1;
-}
-
-function draw(){
-
-ctx.fillStyle="rgba(0,0,0,0.05)";
+function matrix(){
+ctx.fillStyle="rgba(0,0,0,.05)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
-ctx.fillStyle="#00ff00";
-ctx.font=fontSize+"px monospace";
+ctx.fillStyle="#00ff88";
+ctx.font=size+"px monospace";
 
 for(let i=0;i<drops.length;i++){
+let text=chars[Math.floor(Math.random()*chars.length)];
 
-const text =
-letters[Math.floor(Math.random()*letters.length)];
+ctx.fillText(text,i*size,drops[i]*size);
 
-ctx.fillText(
-text,
-i*fontSize,
-drops[i]*fontSize
-);
-
-if(
-drops[i]*fontSize > canvas.height &&
-Math.random() > 0.975
-){
+if(drops[i]*size>canvas.height && Math.random()>0.975)
 drops[i]=0;
-}
 
 drops[i]++;
 }
 }
+setInterval(matrix,35);
 
-setInterval(draw,35);
+// TERMINAL
 
-// LOADING EFFECT
+const terminal=document.getElementById("terminal");
 
-let progress=0;
+const lines=[
+"INITIALIZING MISHRABYTE AI...",
+"AI CORE ONLINE",
+"NETWORK ONLINE",
+"SECURITY ONLINE",
+"USER DETECTED",
+"SCANNING DEVICE...",
+"DEVICE VERIFIED",
+"ACCESS LEVEL: UNKNOWN",
+"DOWNLOADING USER PROFILE..."
+];
 
-const fill =
-document.getElementById("fill");
+let i=0;
 
-const percent =
-document.getElementById("percent");
+function nextLine(){
 
-const scan =
-document.getElementById("scan");
+if(i<lines.length){
 
-const loader =
-document.getElementById("loader");
+terminal.innerHTML += lines[i] + "<br>";
+i++;
 
-const portal =
-document.getElementById("portal");
+setTimeout(nextLine,1000);
 
-const timer = setInterval(()=>{
+}else{
 
-progress += 2;
+startPrank();
 
-fill.style.width =
-progress + "%";
+}
+}
 
-percent.innerHTML =
-progress + "%";
+nextLine();
 
-if(progress >= 100){
+function startPrank(){
 
-clearInterval(timer);
+terminal.innerHTML +=
+"<br><span style='color:red'>SECURITY BREACH DETECTED</span>";
 
-scan.innerHTML =
-"ACCESS GRANTED";
+document.body.classList.add("glitch");
 
 setTimeout(()=>{
 
-loader.style.display="none";
-portal.style.display="block";
+document.body.classList.remove("glitch");
 
-},2000);
+terminal.style.display="none";
+
+let cd=document.getElementById("countdown");
+cd.style.display="block";
+
+let n=5;
+
+cd.innerHTML=n;
+
+let timer=setInterval(()=>{
+
+n--;
+cd.innerHTML=n;
+
+if(n<=0){
+
+clearInterval(timer);
+
+cd.innerHTML="💀";
+
+setTimeout(showPortal,1500);
+
 }
 
-},100);
+},1000);
 
+},2500);
+
+}
+
+function showPortal(){
+
+document.getElementById("countdown").style.display="none";
+
+document.getElementById("portal").style.display="block";
+
+alert("RELAX 😎 YOU JUST ENTERED THE MISHRABYTE PORTAL");
+
+}
 </script>
 
 </body>
 </html>
+```
