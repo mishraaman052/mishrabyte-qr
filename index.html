@@ -258,6 +258,27 @@ alert("RELAX 😎 YOU JUST ENTERED THE MISHRABYTE PORTAL");
 }
 </script>
 
+<button id="startBtn">ENTER MISHRABYTE AI</button>
+
+<script>
+const startBtn = document.getElementById("startBtn");
+
+startBtn.onclick = () => {
+
+const speech = new SpeechSynthesisUtterance(
+"Welcome user. MishraByte Artificial Intelligence System is now online."
+);
+
+speech.rate = 0.9;
+speech.pitch = 1;
+speech.volume = 1;
+
+speechSynthesis.speak(speech);
+
+startBtn.style.display = "none";
+};
+</script>
 </body>
+
 </html>
 ```
